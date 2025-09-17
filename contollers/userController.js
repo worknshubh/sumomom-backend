@@ -126,7 +126,11 @@ const getuserkickdata = async (req, res) => {
       const kickData = await kickTrackerModel.findOne({
         sumoMomId: tokenData.id,
       });
-      return res.json({ msg: "Fetched Successfully", data: kickData });
+      return res.json({
+        msg: "Fetched Successfully",
+        data: kickData,
+        curr_date: moment().format("YYYY-MM-DD"),
+      });
     } catch (error) {
       return res.json({ msg: error.message, success: false });
     }
@@ -134,7 +138,6 @@ const getuserkickdata = async (req, res) => {
     return res.json({
       msg: "Unauthorized User ",
       success: false,
-      curr_date: moment().format("YYYY-MM-DD"),
     });
   }
 };
