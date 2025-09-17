@@ -9,7 +9,7 @@ const kickTrackerModel = require("../models/kickCouterTracker");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const AIresponseHome = require("../models/aihomeresponse");
-
+const moment = require("moment");
 const weightTracker = async (req, res) => {
   const token = req.cookies.token;
   const { updatedWeight, userNotes } = req.body;
