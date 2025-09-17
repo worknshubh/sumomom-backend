@@ -1,5 +1,8 @@
 const jsonwebtoken = require("jsonwebtoken");
-const { JWT_SECRET_KEY, GEMINI_API_KEY } = require("../keys");
+
+require("dotenv").config();
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const User = require("../models/userinfo");
 const moment = require("moment");
 const { GoogleGenerativeAI } = require("@google/generative-ai");

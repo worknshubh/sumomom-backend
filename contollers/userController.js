@@ -1,7 +1,9 @@
 const User = require("../models/userinfo");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
-const { JWT_SECRET_KEY } = require("../keys");
+require("dotenv").config();
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const userSignup = async (req, res) => {
   try {
     const {
@@ -51,7 +53,11 @@ const userSignin = async (req, res) => {
       const unhashed_pass = await bcrypt.compare(password, UserData.password);
       if (unhashed_pass) {
         const token = jsonwebtoken.sign({ id: UserData._id }, JWT_SECRET_KEY);
-        res.cookie("token", token);
+        res.cookie("token", token, {
+          httpOnly: false,
+          sameSite: "none",
+          secure: true,
+        });
         return res.json({ msg: "Login Successfull", success: true });
       } else {
         return res.json({

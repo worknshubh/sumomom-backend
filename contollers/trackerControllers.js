@@ -1,5 +1,7 @@
 const jsonwebtoken = require("jsonwebtoken");
-const { JWT_SECRET_KEY, GEMINI_API_KEY } = require("../keys");
+require("dotenv").config();
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const User = require("../models/userinfo");
 const weightTrackerModel = require("../models/weightTracker");
 const moodTrackerModel = require("../models/moodTracker");
