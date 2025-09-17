@@ -63,7 +63,15 @@ const HomePageResponse = async (req, res) => {
           lastUpdated: Date.now(),
         });
       }
-      return res.json({ success: true, data: jsonResponse });
+
+      const temp = user.fullName.split(" ");
+      const firstName = temp[0];
+      return res.json({
+        success: true,
+        data: jsonResponse,
+        currentWeek: currentWeek,
+        firstName: firstName,
+      });
     } catch (error) {
       return res.json({ msg: error.message, success: false });
     }
