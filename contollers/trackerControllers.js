@@ -125,7 +125,11 @@ const moodTracker = async (req, res) => {
           ],
         });
       }
-      return res.json({ msg: "Updated Successfully ", success: true });
+      return res.json({
+        msg: "Updated Successfully ",
+        success: true,
+        aiTip: result.response.text(),
+      });
     } catch (error) {
       return res.json({ msg: error.message, success: false });
     }
