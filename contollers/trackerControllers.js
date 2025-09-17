@@ -43,7 +43,7 @@ const weightTracker = async (req, res) => {
         WeightData.Data.push({
           updatedWeight: updatedWeight,
           userNotes: userNotes,
-          lastUpdatedDate: lastUpdatedDate,
+          lastUpdatedDate: moment().format("YYYY-MM-DD"),
           aiTip: result.response.text(),
         });
         await WeightData.save();
@@ -56,7 +56,7 @@ const weightTracker = async (req, res) => {
             {
               updatedWeight: updatedWeight,
               userNotes: userNotes,
-              lastUpdatedDate: lastUpdatedDate,
+              lastUpdatedDate: moment().format("YYYY-MM-DD"),
               aiTip: result.response.text(),
             },
           ],
@@ -157,7 +157,7 @@ const kickCounter = async (req, res) => {
             {
               kickCount: kickCount,
               userNotes: userNotes,
-              lastUpdatedDate: lastUpdatedDate,
+              lastUpdatedDate: moment().format("YYYY-MM-DD"),
             },
           ],
         });
