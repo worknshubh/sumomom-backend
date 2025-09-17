@@ -12,7 +12,7 @@ const AIresponseHome = require("../models/aihomeresponse");
 const moment = require("moment");
 const weightTracker = async (req, res) => {
   const token = req.cookies.token;
-  const { updatedWeight, userNotes } = req.body;
+  let { updatedWeight, userNotes } = req.body;
   if (userNotes === null) {
     userNotes = "No Notes Available";
   }
