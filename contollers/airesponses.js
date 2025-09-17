@@ -32,7 +32,7 @@ const HomePageResponse = async (req, res) => {
             you have to generate following output in json format
                  - currentTrimester (1, 2, or 3)
                  - babySize (string like "lemon", "apple")
-                 - tipOftheWeek (one helpful pregnancy tip in one sentence)
+                 - tipOftheWeek (one helpful pregnancy tip in one line)
     `;
 
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
