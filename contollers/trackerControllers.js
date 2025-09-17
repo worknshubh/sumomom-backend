@@ -10,6 +10,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const AIresponseHome = require("../models/aihomeresponse");
 const moment = require("moment");
+const symptomsTrackerModel = require("../models/symptopmsTracker");
 const weightTracker = async (req, res) => {
   const token = req.cookies.token;
   let { updatedWeight, userNotes } = req.body;
@@ -177,4 +178,45 @@ const kickCounter = async (req, res) => {
     return res.json({ msg: "Unauthorized User ", success: false });
   }
 };
-module.exports = { weightTracker, moodTracker, kickCounter };
+
+const SymptomsTracker = async (req, res) => {
+  const token = req.cookies.token;
+  const { symptomName, userNotes } = req.body;
+  if (token) {
+    try {
+      const tokenData = jsonwebtoken.verify(token, JWT_SECRET_KEY);
+      const userData = await User.findOne({
+        _id: tokenData.id,
+      });
+
+      const symptopsData = await symptomsTrackerModel.findOne({
+        sumoMomId: userData._id,
+      });
+      if (symptopsData) {
+        symptopsData.Data.push({
+          symptomName: symptomName,
+          userNotes: userNotes,
+          lastUpdatedDate: moment().format("YYYY-MM-DD"),
+        });
+        await symptopsData.save();
+      } else {
+        await symptomsTrackerModel.create({
+          sumoMomId: userData._id,
+          Data: [
+            {
+              symptomName: symptomName,
+              userNotes: userNotes,
+              lastUpdatedDate: moment().format("YYYY-MM-DD"),
+            },
+          ],
+        });
+      }
+      return res.json({ msg: "Updated Successfully ", success: true });
+    } catch (error) {
+      return res.json({ msg: error.message, success: false });
+    }
+  } else {
+    return res.json({ msg: "Unauthorized User ", success: false });
+  }
+};
+module.exports = { weightTracker, moodTracker, kickCounter, SymptomsTracker };
