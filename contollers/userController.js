@@ -2,6 +2,7 @@ const User = require("../models/userinfo");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const weightTrackerModel = require("../models/weightTracker");
+const kickTrackerModel = require("../models/kickCouterTracker");
 require("dotenv").config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -115,4 +116,27 @@ const getuserweightinfo = async (req, res) => {
   }
 };
 
-module.exports = { userSignup, userSignin, getuserdata, getuserweightinfo };
+const getuserkickdata = async (req, res) => {
+  const token = req.cookies.token;
+  if (token) {
+    try {
+      const tokenData = jsonwebtoken.verify(token, JWT_SECRET_KEY);
+      const kickData = await kickTrackerModel.findOne({
+        sumoMomId: tokenData.id,
+      });
+      return res.json({ msg: "Fetched Successfully", data: kickData });
+    } catch (error) {
+      return res.json({ msg: error.message, success: false });
+    }
+  } else {
+    return res.json({ msg: "Unauthorized User ", success: false });
+  }
+};
+
+module.exports = {
+  userSignup,
+  userSignin,
+  getuserdata,
+  getuserweightinfo,
+  getuserkickdata,
+};
