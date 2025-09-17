@@ -1,7 +1,10 @@
 const express = require("express");
-const { getuserdata } = require("../contollers/userController");
+const {
+  getuserdata,
+  getuserweightinfo,
+} = require("../contollers/userController");
 const router = express();
 
 router.get("/getuserdata", getuserdata);
-
+router.get("/getuserweightinfo", getuserweightinfo);
 module.exports = router;
