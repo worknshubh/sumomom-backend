@@ -31,7 +31,7 @@ const HomePageResponse = async (req, res) => {
 
             you have to generate following output in json format
                  - currentTrimester (1, 2, or 3)
-                 - babySize (string like "lemon", "apple")
+                 - babySize (string: choose only from ["lemon", "apple", "mango", "banana", "grape", "peach", "pear", "watermelon", "pumpkin", "papaya"])
                  - tipOftheWeek (one helpful pregnancy tip in one line within 7-8 words)
     `;
 
