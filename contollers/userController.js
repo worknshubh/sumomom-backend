@@ -80,4 +80,21 @@ const userSignin = async (req, res) => {
   }
 };
 
-module.exports = { userSignup, userSignin };
+const getuserdata = async (req, res) => {
+  const token = req.cookies.token;
+  if (token) {
+    try {
+      const tokenData = jsonwebtoken.verify(token, JWT_SECRET_KEY);
+      const userData = await User.findOne({
+        _id: tokenData.id,
+      });
+      return res.json({ msg: "Fetched Successfully", data: userData });
+    } catch (error) {
+      return res.json({ msg: error.message, success: false });
+    }
+  } else {
+    return res.json({ msg: "Unauthorized User ", success: false });
+  }
+};
+
+module.exports = { userSignup, userSignin, getuserdata };
