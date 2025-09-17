@@ -131,7 +131,11 @@ const getuserkickdata = async (req, res) => {
       return res.json({ msg: error.message, success: false });
     }
   } else {
-    return res.json({ msg: "Unauthorized User ", success: false });
+    return res.json({
+      msg: "Unauthorized User ",
+      success: false,
+      curr_date: moment().format("YYYY-MM-DD"),
+    });
   }
 };
 
