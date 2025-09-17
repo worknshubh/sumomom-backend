@@ -9,6 +9,7 @@ const kickTrackerSchema = new mongoose.Schema({
       kickCount: {
         type: Number,
         required: true,
+        default: 0,
       },
       userNotes: {
         type: String,
