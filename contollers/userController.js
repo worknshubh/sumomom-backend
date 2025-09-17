@@ -58,7 +58,11 @@ const userSignin = async (req, res) => {
           sameSite: "none",
           secure: true,
         });
-        return res.json({ msg: "Login Successfull", success: true });
+        return res.json({
+          msg: "Login Successfull",
+          success: true,
+          token: token,
+        });
       } else {
         return res.json({
           msg: "Invaild UserNumber or Password",
