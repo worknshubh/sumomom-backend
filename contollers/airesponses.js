@@ -18,6 +18,9 @@ const HomePageResponse = async (req, res) => {
       });
       const lmp = moment(user.lastMensturalPeriod);
       const now = moment();
+      const saveinAIhome = await AIresponseHome.findOne({
+        SumoMomId: tokenData.id,
+      });
       const currentWeek = now.diff(lmp, "weeks");
       const prompt = `you have input fields : 
             fullName : ${user.fullName} ,
@@ -43,16 +46,14 @@ const HomePageResponse = async (req, res) => {
 
       const jsonResponse = JSON.parse(text);
 
-      const saveinAIhome = await AIresponseHome.findOne({
-        SumoMomId: tokenData.id,
-      });
       if (saveinAIhome) {
-        saveinAIhome.currentWeek = currentWeek;
-        saveinAIhome.currentTrimester = jsonResponse.currentTrimester;
-        saveinAIhome.babySize = jsonResponse.babySize;
-        saveinAIhome.tipOftheWeek = jsonResponse.tipOftheWeek;
-        saveinAIhome.lastUpdated = Date.now();
-        await saveinAIhome.save();
+        saveinAIhome.set({
+          currentWeek: currentWeek,
+          currentTrimester: jsonResponse.currentTrimester,
+          babySize: jsonResponse.babySize,
+          tipOftheWeek: jsonResponse.tipOftheWeek,
+          lastUpdated: Date.now(),
+        });
       } else {
         AIresponseHome.create({
           SumoMomId: tokenData.id,
