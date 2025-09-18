@@ -59,7 +59,7 @@ const HomePageResponse = async (req, res) => {
           });
           await saveinAIhome.save();
         } else {
-          const saveinAIhome = AIresponseHome.create({
+          saveinAIhome = AIresponseHome.create({
             SumoMomId: tokenData.id,
             currentWeek: currentWeek,
             currentTrimester: jsonResponse.currentTrimester,
