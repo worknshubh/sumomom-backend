@@ -10,6 +10,7 @@ const authRoute = require("../routes/auth");
 const homeRoute = require("../routes/aihomeresponse");
 const trackerRoute = require("../routes/tracker");
 const userRoute = require("../routes/user");
+const reminderRoute = require("../routes/reminders");
 const app = express();
 mongoose.connect(MONGODB_URL);
 mongoose.connection.on("connected", () => {
@@ -28,4 +29,5 @@ app.use("/api/auth", authRoute);
 app.use("/api/home", homeRoute);
 app.use("/api/tracker", trackerRoute);
 app.use("/api/user", userRoute);
+app.use("/api/reminders", reminderRoute);
 module.exports = app;
