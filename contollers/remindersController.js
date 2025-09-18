@@ -41,4 +41,27 @@ const reminderAdd = async (req, res) => {
   }
 };
 
-module.exports = { reminderAdd };
+const fetchReminders = async (req, res) => {
+  const token = req.cookies.token;
+  if (token) {
+    try {
+      const tokenData = jsonwebtoken.verify(token, JWT_SECRET_KEY);
+      const userData = await User.findOne({
+        _id: tokenData.id,
+      });
+      const remData = await reminderModel.findOne({
+        _id: userData._id,
+      });
+
+      return res.json({
+        msg: "Fetched Successfully",
+        data: remData,
+      });
+    } catch (error) {
+      return res.json({ msg: error.message, success: false });
+    }
+  } else {
+    return res.json({ msg: "Unauthorized User ", success: false });
+  }
+};
+module.exports = { reminderAdd, fetchReminders };
