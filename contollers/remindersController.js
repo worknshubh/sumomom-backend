@@ -78,8 +78,15 @@ const deleteReminder = async (req, res) => {
         "Data._id": postID,
       });
 
+      findRem.data.Data = findRem.data.Data.filter(
+        (reminder) => reminder._id.toString() !== postID
+      );
+
+      await findRem.save();
+
       return res.json({
-        msg: "Fetched Successfully",
+        msg: "Deleted Successfully",
+        success: true,
         data: findRem,
       });
     } catch (error) {
