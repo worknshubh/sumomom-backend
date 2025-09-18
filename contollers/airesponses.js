@@ -19,10 +19,13 @@ const HomePageResponse = async (req, res) => {
       const lmp = moment(user.lastMensturalPeriod);
       const now = moment();
       const saveinAIhome = await AIresponseHome.findOne({
-        SumoMomId: tokenData.id,
+        SumoMomId: user._id,
       });
       const currentWeek = now.diff(lmp, "weeks");
-      const prompt = `you have input fields : 
+      const temp = user.fullName.split(" ");
+      const firstName = temp[0];
+      if (!saveinAIhome || now.diff(saveinAIhome.lastUpdated, "weeks") > 1) {
+        const prompt = `you have input fields : 
             fullName : ${user.fullName} ,
             currentAge : ${user.currentAge},
             userHeight : ${user.userHeight},
@@ -38,41 +41,48 @@ const HomePageResponse = async (req, res) => {
                  - tipOftheWeek (one helpful pregnancy tip in one line within 7-8 words)
     `;
 
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const result = await model.generateContent(prompt);
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const result = await model.generateContent(prompt);
 
-      let text = result.response.text().trim();
-      text = text.replace(/```json|```/g, "").trim();
+        let text = result.response.text().trim();
+        text = text.replace(/```json|```/g, "").trim();
 
-      const jsonResponse = JSON.parse(text);
+        const jsonResponse = JSON.parse(text);
 
-      if (saveinAIhome) {
-        saveinAIhome.set({
+        if (saveinAIhome) {
+          saveinAIhome.set({
+            currentWeek: currentWeek,
+            currentTrimester: jsonResponse.currentTrimester,
+            babySize: jsonResponse.babySize,
+            tipOftheWeek: jsonResponse.tipOftheWeek,
+            lastUpdated: moment().format("YYYY-MM-DD"),
+          });
+          await saveinAIhome.save();
+        } else {
+          const saveinAIhome = AIresponseHome.create({
+            SumoMomId: tokenData.id,
+            currentWeek: currentWeek,
+            currentTrimester: jsonResponse.currentTrimester,
+            babySize: jsonResponse.babySize,
+            tipOftheWeek: jsonResponse.tipOftheWeek,
+            lastUpdated: moment().format("YYYY-MM-DD"),
+          });
+        }
+
+        return res.json({
+          success: true,
+          data: saveinAIhome,
           currentWeek: currentWeek,
-          currentTrimester: jsonResponse.currentTrimester,
-          babySize: jsonResponse.babySize,
-          tipOftheWeek: jsonResponse.tipOftheWeek,
-          lastUpdated: Date.now(),
+          firstName: firstName,
         });
       } else {
-        AIresponseHome.create({
-          SumoMomId: tokenData.id,
+        return res.json({
+          success: true,
+          data: saveinAIhome,
           currentWeek: currentWeek,
-          currentTrimester: jsonResponse.currentTrimester,
-          babySize: jsonResponse.babySize,
-          tipOftheWeek: jsonResponse.tipOftheWeek,
-          lastUpdated: Date.now(),
+          firstName: firstName,
         });
       }
-
-      const temp = user.fullName.split(" ");
-      const firstName = temp[0];
-      return res.json({
-        success: true,
-        data: jsonResponse,
-        currentWeek: currentWeek,
-        firstName: firstName,
-      });
     } catch (error) {
       return res.json({ msg: error.message, success: false });
     }

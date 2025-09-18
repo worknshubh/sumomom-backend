@@ -21,7 +21,7 @@ const airesponsehomeSchema = new mongoose.Schema({
     required: true,
   },
   lastUpdated: {
-    type: Date,
+    type: String,
     required: true,
   },
 });
