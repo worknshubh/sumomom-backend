@@ -50,7 +50,7 @@ const fetchReminders = async (req, res) => {
         _id: tokenData.id,
       });
       const remData = await reminderModel.findOne({
-        _id: userData._id,
+        sumoMomId: userData._id,
       });
 
       return res.json({
