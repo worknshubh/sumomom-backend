@@ -78,7 +78,7 @@ const deleteReminder = async (req, res) => {
         "Data._id": postID,
       });
 
-      findRem.data.Data = findRem.data.Data.filter(
+      findRem.Data = findRem.Data.filter(
         (reminder) => reminder._id.toString() !== postID
       );
 
