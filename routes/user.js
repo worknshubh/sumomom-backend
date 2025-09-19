@@ -5,6 +5,7 @@ const {
   getuserkickdata,
   getusermooddata,
   getusersymptomsdata,
+  updateuserdata,
 } = require("../contollers/userController");
 const router = express();
 
@@ -13,4 +14,5 @@ router.get("/getuserweightinfo", getuserweightinfo);
 router.get("/getuserkickdata", getuserkickdata);
 router.get("/getusermooddata", getusermooddata);
 router.get("/getusersymptomsdata", getusersymptomsdata);
+router.post("/updateprofile", updateuserdata);
 module.exports = router;

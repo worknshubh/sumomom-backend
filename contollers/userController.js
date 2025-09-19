@@ -177,6 +177,43 @@ const getusersymptomsdata = async (req, res) => {
   }
 };
 
+const updateuserdata = async (req, res) => {
+  const token = req.cookies.token;
+  const {
+    fullName,
+    mobileNumber,
+    currentAge,
+    userHeight,
+    prePregnancyWeight,
+    userOccupation,
+    userPhysicalActivity,
+    userDiet,
+  } = req.body;
+  if (token) {
+    try {
+      const tokenData = jsonwebtoken.verify(token, JWT_SECRET_KEY);
+      const userData = await User.findByIdAndUpdate(tokenData.id, {
+        fullName: fullName,
+        mobileNumber: mobileNumber,
+        currentAge: currentAge,
+        userHeight: userHeight,
+        prePregnancyWeight: prePregnancyWeight,
+        userOccupation: userOccupation,
+        userPhysicalActivity: userPhysicalActivity,
+        userDiet: userDiet,
+      });
+
+      await userData.save();
+
+      return res.json({ msg: "Updated Successfully", success: true });
+    } catch (error) {
+      return res.json({ msg: error.message, success: false });
+    }
+  } else {
+    return res.json({ msg: "Unauthorized User ", success: false });
+  }
+};
+
 module.exports = {
   userSignup,
   userSignin,
@@ -185,4 +222,5 @@ module.exports = {
   getuserkickdata,
   getusermooddata,
   getusersymptomsdata,
+  updateuserdata,
 };
