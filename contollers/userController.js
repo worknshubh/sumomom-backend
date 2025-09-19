@@ -42,6 +42,7 @@ const userSignup = async (req, res) => {
       userOccupation: userOccupation,
       userPhysicalActivity: userPhysicalActivity,
       password: hashedpassword,
+      userImage: null,
     });
 
     return res.json({ msg: "User Created Successfully", success: true });
@@ -188,6 +189,7 @@ const updateuserdata = async (req, res) => {
     userOccupation,
     userPhysicalActivity,
     userDiet,
+    userImage,
   } = req.body;
   if (token) {
     try {
@@ -201,6 +203,7 @@ const updateuserdata = async (req, res) => {
         userOccupation: userOccupation,
         userPhysicalActivity: userPhysicalActivity,
         userDiet: userDiet,
+        userImage: userImage,
       });
 
       await userData.save();

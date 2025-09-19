@@ -13,6 +13,10 @@ const userinfoSchema = new mongoose.Schema({
   userOccupation: { type: String, required: true },
   userPhysicalActivity: { type: String, required: true },
   password: { type: String, require: true },
+  userImage: {
+    type: String,
+    default: null,
+  },
 });
 
 const User = mongoose.model("User", userinfoSchema);
